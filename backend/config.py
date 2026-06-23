@@ -6,8 +6,8 @@ SECRET_KEY = "dev-secret-key-change-in-prod"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_HOURS = 24
 
-# Database
-DATABASE_URL = "sqlite:///" + os.path.join(os.path.dirname(__file__), "todo.db")
+# Firebase
+SERVICE_ACCOUNT_PATH = os.path.join(os.path.dirname(__file__), "service-account.json")
 
 # CORS
 CORS_ORIGINS = [

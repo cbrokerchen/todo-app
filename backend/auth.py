@@ -6,10 +6,9 @@ import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
-from sqlalchemy.orm import Session
 
 from config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_HOURS
-from models import User, get_db
+import models
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -63,9 +62,8 @@ def decode_token(token: str) -> str:
 
 def get_current_user(
     token: Optional[str] = Depends(oauth2_scheme),
-    db: Session = Depends(get_db),
-) -> User:
-    """FastAPI dependency: extract the current user from the Authorization header."""
+) -> str:
+    """FastAPI dependency: extract the current username from the Authorization header."""
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -73,11 +71,11 @@ def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
     username = decode_token(token)
-    user = db.query(User).filter(User.username == username).first()
+    user = models.get_user(username)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="User not found",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    return user
+    return username

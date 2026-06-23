@@ -22,8 +22,7 @@ export default function DashboardPage() {
     setError(null);
     try {
       const data = await fetchTodos();
-      // Sort newest first
-      data.sort((a, b) => b.id - a.id);
+      // Backend already returns newest-first
       setTodos(data);
     } catch (err: unknown) {
       setError(extractError(err) ?? '載入待辦事項失敗');

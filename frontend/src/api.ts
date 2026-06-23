@@ -54,7 +54,7 @@ export async function register(username: string, password: string): Promise<Auth
 // --- Todo helpers ---
 
 export interface Todo {
-  id: number;
+  id: string;
   title: string;
   description: string | null;
   completed: boolean;
@@ -76,16 +76,16 @@ export async function createTodo(payload: TodoCreate): Promise<Todo> {
   return res.data;
 }
 
-export async function updateTodo(id: number, payload: TodoCreate): Promise<Todo> {
+export async function updateTodo(id: string, payload: TodoCreate): Promise<Todo> {
   const res = await api.put<Todo>(`/todos/${id}`, payload);
   return res.data;
 }
 
-export async function deleteTodo(id: number): Promise<void> {
+export async function deleteTodo(id: string): Promise<void> {
   await api.delete(`/todos/${id}`);
 }
 
-export async function toggleTodo(id: number): Promise<Todo> {
+export async function toggleTodo(id: string): Promise<Todo> {
   const res = await api.patch<Todo>(`/todos/${id}/toggle`);
   return res.data;
 }
